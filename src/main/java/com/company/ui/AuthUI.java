@@ -1,7 +1,6 @@
 package com.company.ui;
 
 import com.company.App;
-import com.company.db.Database;
 import com.company.dto.UserDTO;
 import com.company.entity.User;
 import com.company.enums.UserType;
@@ -9,16 +8,15 @@ import com.company.service.UserService;
 import com.company.service.UserServiceImpl;
 import com.company.util.ScannerUtil;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class AuthUI {
     static UserService userService= new UserServiceImpl();
 
     public static void run() {
         UserService.uploadUsers();
-        logIn();
+        while (true){
+            logIn();
+        }
     }
     public static void logIn(){
 
@@ -30,14 +28,14 @@ public class AuthUI {
             }
             App.currUser=null;
         }else while (true){
-            System.out.println("       * * * * Log In * * * *\n");
-            System.out.println("Do you haven't an account?  1-> Create account  || 0->Exit");
+            System.out.println("\033[1;34m"+"       * * * * Log In * * * *\n");
+            System.out.println("\033[0m"+"Do you haven't an account?  \n1-> Create account  || 0->Exit");
 
-            System.out.print("Enter phone number -> +998");
+            System.out.print("\nEnter phone number -> +998");
             String phone = ScannerUtil.textIn.nextLine();
 
             if(phone.equals("0")){
-                return;
+                System.exit(0);
             }
 
 
@@ -53,7 +51,7 @@ public class AuthUI {
                     continue;
                 }
 
-                System.out.print("Enter password -> ");
+                System.out.print("\033[0m"+"Enter password -> ");
                 String password = ScannerUtil.textIn.nextLine();
                 User user = userService.checkAndGetUser("+998"+phone, password);
                 if(user!=null){
@@ -66,7 +64,7 @@ public class AuthUI {
                     App.currUser=null;
                     return;
                 }else{
-                    System.out.println("Ushbu ma'lumotlar orqali foydalanuvchi topilmadi");
+                    System.out.println("\033[1;31m"+"\nUshbu ma'lumotlar orqali foydalanuvchi topilmadi\n");
                 }
             }
 
@@ -74,8 +72,8 @@ public class AuthUI {
     }
     public static void signUp(){
         while (true){
-            System.out.println("       * * * * Sign Up * * * *\n");
-            System.out.print("0-> Exit  || Enter phone number -> +998");
+            System.out.println("\033[1;34m"+"       * * * * Sign Up * * * *\n");
+            System.out.print("\033[0m"+"0-> Exit  || Enter phone number -> +998");
             String phone = ScannerUtil.textIn.nextLine();
 
             if(phone.equals("0")){
@@ -83,34 +81,35 @@ public class AuthUI {
             }
 
             if(userService.doesHave("+998"+phone)){
-                System.out.println("This number already exists. Is it you ? If so log in");
+                System.out.println("\033[1;31m"+"\nThis number already exists. Is it you ? If so log in\n");
+                return;
             }
 
             String result = checkPhone(phone);
             if(!result.equals("ok")){
-                System.out.println(result);
+                System.out.println("\033[1;31m"+result);
                 continue;
             }
 
             String password;
             while (true){
-                System.out.print("0-> Exit  || Enter password : ");
+                System.out.print("\033[0m"+"0-> Exit  || Enter password : ");
                 password = ScannerUtil.textIn.nextLine();
 
                 if (password.equals("0")) return;
 
                 if(password.isBlank()){
-                    System.out.println("Password is required");
+                    System.out.println("\033[1;31m"+"\nPassword is required\n");
                     continue;
                 }
                 if (!password.matches("[a-zA-Z0-9]{8}+")){
-                    System.out.println("In password, must be at least 8 alphanumeric or underscore character");
+                    System.out.println("\033[1;31m"+"\nIn password, must be at least 8 alphanumeric or underscore character\n");
                     continue;
                 }
                 break;
             }
 
-            System.out.print("0-> Exit  || Enter name : ");
+            System.out.print("\033[0m"+"0-> Exit  || Enter name : ");
             String name = ScannerUtil.textIn.nextLine();
 
             if (name.equals("0")) return;
@@ -118,7 +117,7 @@ public class AuthUI {
             UserDTO userDTO = new UserDTO(name,"+998"+phone,password);
             User user = userService.addUser(userDTO);
             if(user==null){
-                System.out.println("Something went wrong. Please try again");
+                System.out.println("\033[1;31m"+"\nSomething went wrong. Please try again\n");
                 continue;
             }
             App.currUser=user;

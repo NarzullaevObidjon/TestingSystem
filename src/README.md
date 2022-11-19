@@ -8,7 +8,6 @@
     2. Delete subject
     2. Show subjects
     3. CRUD of question
-    4. Show results of each subject
     
        ...
 

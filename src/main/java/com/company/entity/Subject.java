@@ -8,9 +8,12 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Subject {
    private int id;
    private String name;
    private double price;  // per question
+   static int count=0;
+   {
+      id=++count;
+   }
 }

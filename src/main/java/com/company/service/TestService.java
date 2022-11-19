@@ -18,11 +18,20 @@ import java.util.Map;
 
 public interface TestService {
 
-    boolean addSubject(Subject subject);
-    Result editQuestion(Question newQuestion);
-    Result deleteQuestion(Question question,int subjectId);
-    Question getQuestion(int id);
-    Result deleteSubject(int id);
+    boolean addSubject(String name, double price);
+    void deleteQuestion(int id);
+    void deleteSubject(int id);
+    List<Subject> getSubjects();
+    Subject getSub(int id);
+    boolean doesHaveSub(String s);
+    void addQuestion(Question question);
+    Question checkAndGetQuestion(int id);
+    List<Question> getQuestions();
+     boolean rewriteQuestions();
+     boolean rewriteSubjects();
+
+     List<Question> getQuestionsBySubject(int subId);
+
 
     static Result uploadQuestions(){
         File file = new File(Database.BASE_FOLDER,"questions.json");
@@ -41,7 +50,7 @@ public interface TestService {
         File file = new File(Database.BASE_FOLDER,"subjects.json");
         try (BufferedReader in = new BufferedReader(new FileReader(file)) ){
             Gson gson = new Gson();
-            Type type = new TypeToken<List<Question>>() {
+            Type type = new TypeToken<List<Subject>>() {
             }.getType();
             Database.subjects = gson.fromJson(in, type);
         } catch (IOException e) {

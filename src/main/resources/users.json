@@ -1,11 +1,26 @@
 [
   {
     "id": 1,
+    "name": "Admin",
+    "phone": "+998901234567",
+    "password": "00000000",
+    "balance": 0.0,
+    "type": "ADMIN"
+  },
+  {
+    "id": 2,
     "name": "Obidjon",
     "phone": "+998944660444",
     "password": "04440444",
+    "balance": 50.0,
+    "type": "USER"
+  },
+  {
+    "id": 5,
+    "name": "Zohid",
+    "phone": "+998900614542",
+    "password": "98029802",
     "balance": 0.0,
-    "type": "USER",
-    "notActive": true
+    "type": "USER"
   }
 ]

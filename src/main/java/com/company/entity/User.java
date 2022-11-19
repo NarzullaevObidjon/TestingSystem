@@ -14,10 +14,18 @@ public class User {
    private String password;
    private double balance=0.0;
    private UserType type=UserType.USER;
-   private boolean notActive =true;
+   static int count=0;
+   {
+      id=++count;
+   }
 
-   public User(int id, String name, String phone, String password) {
-      this.id=id;
+   public User( String name, String phone, String password) {
+      this.name = name;
+      this.phone = phone;
+      this.password = password;
+   }
+   public User( String name, String phone, String password, UserType userType) {
+      this.type=userType;
       this.name = name;
       this.phone = phone;
       this.password = password;

@@ -1,1 +1,79 @@
-[]
+[
+  {
+    "id": 3,
+    "subjectId": 1,
+    "text": "Eng kichik tub son qaysi ?",
+    "ans": "2",
+    "wrongAns": [
+      "0",
+      "1",
+      "3"
+    ]
+  },
+  {
+    "id": 4,
+    "subjectId": 1,
+    "text": "1+2+3+ ... +10 \u003d ",
+    "ans": "55",
+    "wrongAns": [
+      "45",
+      "60",
+      "50"
+    ]
+  },
+  {
+    "id": 3,
+    "subjectId": 1,
+    "text": "Eng kichik natural son qaysi ?",
+    "ans": "1",
+    "wrongAns": [
+      "0",
+      "2",
+      "-1"
+    ]
+  },
+  {
+    "id": 4,
+    "subjectId": 1,
+    "text": "EKUB(15,10)\u003d",
+    "ans": "5",
+    "wrongAns": [
+      "10",
+      "1",
+      "15"
+    ]
+  },
+  {
+    "id": 5,
+    "subjectId": 1,
+    "text": "EKUK(10,15)\u003d",
+    "ans": "30",
+    "wrongAns": [
+      "60",
+      "45",
+      "15"
+    ]
+  },
+  {
+    "id": 6,
+    "subjectId": 1,
+    "text": "-3-2-1-0+1+2+3+4\u003d",
+    "ans": "4",
+    "wrongAns": [
+      "0",
+      "1",
+      "2"
+    ]
+  },
+  {
+    "id": 7,
+    "subjectId": 1,
+    "text": "2*2\u003d",
+    "ans": "4",
+    "wrongAns": [
+      "1",
+      "2",
+      "3"
+    ]
+  }
+]

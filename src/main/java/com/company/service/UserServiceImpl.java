@@ -30,8 +30,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean fillBalance(double money, int id) {
+        for (User user : Database.users) {
+            if (user.getId()==id) {
+                user.setBalance(user.getBalance()+money);
+                writeUsers();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public User addUser(UserDTO userDTO) {
-        User user = new User(Database.users.size()+1,userDTO.getName(), userDTO.getPhone(), userDTO.getPassword());
+        User user = new User(userDTO.getName(), userDTO.getPhone(), userDTO.getPassword());
         Database.users.add(user);
         writeUsers();
         return user;

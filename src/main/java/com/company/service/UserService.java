@@ -36,4 +36,6 @@ public interface UserService {
     User addUser(UserDTO userDTO);
 
     boolean doesHave(String phone);
+
+    boolean fillBalance(double money, int id);
 }

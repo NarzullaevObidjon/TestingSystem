@@ -4,6 +4,7 @@ import com.company.entity.History;
 import com.company.entity.Question;
 import com.company.entity.Subject;
 import com.company.entity.User;
+import com.company.enums.UserType;
 
 import java.util.ArrayList;
 import java.util.List;
