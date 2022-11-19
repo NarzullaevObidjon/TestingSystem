@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "name": "Obidjon",
+    "phone": "+998944660444",
+    "password": "04440444",
+    "balance": 0.0,
+    "type": "USER",
+    "notActive": true
+  }
+]
