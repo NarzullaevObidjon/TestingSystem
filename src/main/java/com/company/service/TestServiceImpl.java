@@ -8,8 +8,10 @@ import com.google.gson.Gson;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -180,5 +182,56 @@ public class TestServiceImpl implements TestService {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    public boolean getSubject() {
+        File file = new File(Database.BASE_FOLDER, "subjects.docx");
+        file.getParentFile().mkdirs();
+        List<Subject> subjects = Database.subjects;
+
+        try (XWPFDocument document = new XWPFDocument();
+             FileOutputStream out = new FileOutputStream(file)) {
+
+            XWPFParagraph paragraph = document.createParagraph();
+            paragraph.setAlignment(ParagraphAlignment.CENTER);
+            XWPFRun run = paragraph.createRun();
+            run.setBold(true);
+            run.setFontSize(16);
+            run.setText("Subjects");
+
+            XWPFTable table = document.createTable();
+            table.setWidth("100%");
+
+            XWPFTableRow headerRow =table.getRow(0);
+
+            XWPFTableCell cell00 = headerRow.getCell(0);
+            cell00.setText("Id");
+
+            XWPFTableCell cell01 = headerRow.createCell();
+            cell01.setText("Name");
+
+            XWPFTableCell cell02 = headerRow.createCell();
+            cell02.setText("Price");
+
+            for (Subject subject : subjects) {
+                XWPFTableRow row =table.createRow();
+                row.getCell(0).setText(String.valueOf(subject.getId()));
+                row.getCell(1).setText(subject.getName());
+                row.getCell(2).setText(String.valueOf(subject.getPrice()));
+            }
+
+            XWPFParagraph footerParagraph = document.createParagraph();
+            footerParagraph.setAlignment(ParagraphAlignment.RIGHT);
+            footerParagraph.createRun().setText(
+                    "\n"+ LocalDateTime.now()+" xolatiga ko'ra."
+            );
+
+            document.write(out);
+
+        } catch (IOException e) {
+            return false;
+        }
+
+        return true;
     }
 }

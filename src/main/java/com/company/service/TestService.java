@@ -24,6 +24,8 @@ public interface TestService {
 
     void deleteSubject(int id);
 
+    boolean getSubject();
+
     List<Subject> getSubjects();
 
     Subject getSub(int id);
