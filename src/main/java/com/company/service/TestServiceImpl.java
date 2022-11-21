@@ -202,7 +202,7 @@ public class TestServiceImpl implements TestService {
             XWPFTable table = document.createTable();
             table.setWidth("100%");
 
-            XWPFTableRow headerRow =table.getRow(0);
+            XWPFTableRow headerRow = table.getRow(0);
 
             XWPFTableCell cell00 = headerRow.getCell(0);
             cell00.setText("Id");
@@ -214,7 +214,7 @@ public class TestServiceImpl implements TestService {
             cell02.setText("Price");
 
             for (Subject subject : subjects) {
-                XWPFTableRow row =table.createRow();
+                XWPFTableRow row = table.createRow();
                 row.getCell(0).setText(String.valueOf(subject.getId()));
                 row.getCell(1).setText(subject.getName());
                 row.getCell(2).setText(String.valueOf(subject.getPrice()));
@@ -223,7 +223,7 @@ public class TestServiceImpl implements TestService {
             XWPFParagraph footerParagraph = document.createParagraph();
             footerParagraph.setAlignment(ParagraphAlignment.RIGHT);
             footerParagraph.createRun().setText(
-                    "\n"+ LocalDateTime.now()+" xolatiga ko'ra."
+                    "\n" + LocalDateTime.now() + " xolatiga ko'ra."
             );
 
             document.write(out);
