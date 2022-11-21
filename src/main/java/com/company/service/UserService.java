@@ -38,4 +38,6 @@ public interface UserService {
     boolean doesHave(String phone);
 
     boolean fillBalance(double money, int id);
+
+    boolean userPdf();
 }
