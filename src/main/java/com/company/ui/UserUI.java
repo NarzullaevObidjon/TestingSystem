@@ -64,7 +64,7 @@ public class UserUI {
 
     public static void userInterface() {
         while (true) {
-            System.out.println("1. Solve test\n2. Fill balance\n3. Show results\n0. Log out");
+            System.out.println("1. Solve test\n2. Fill balance\n3. Show results\n4. Parol almashtirish\n0. Log out");
 
             switch (ScannerUtil.numIn.nextInt()) {
                 case 1:
@@ -76,6 +76,9 @@ public class UserUI {
                 case 3:
                     showResults();
                     break;
+                case 4:
+                    changeParol();
+                    break;
                 case 0: {
                     App.currUser = null;
                     return;
@@ -83,6 +86,29 @@ public class UserUI {
             }
         }
 
+    }
+
+    private static void changeParol() {
+        String password;
+        while (true){
+            System.out.print("\033[0m"+"0-> Exit  || Enter new password : ");
+            password = ScannerUtil.textIn.nextLine();
+
+            if (password.equals("0")) return;
+
+            if(password.isBlank()){
+                System.out.println("\033[1;31m"+"\nPassword is required\n");
+                continue;
+            }
+            if (!password.matches("[a-zA-Z0-9]{8}+")){
+                System.out.println("\033[1;31m"+"\nIn password, must be at least 8 alphanumeric or underscore character\n");
+                continue;
+            }
+            break;
+        }
+
+        App.currUser.setPassword(password);
+        System.out.println("Password is changed successfully");
     }
 
     // user methods
@@ -136,7 +162,7 @@ public class UserUI {
             System.out.println("No subjects. Firstly, add subject");
             return;
         }
-        printSubjects();
+        printSubs();
         System.out.print("Select subject => ");
 
         int subId = ScannerUtil.numIn.nextInt();
@@ -170,7 +196,7 @@ public class UserUI {
             System.out.println("No questions to edit");
             return;
         }
-        printQuestions();
+        printQues();
         System.out.print("Select question to edit => ");
         int id = ScannerUtil.numIn.nextInt();
         Question question = testService.checkAndGetQuestion(id);
@@ -203,7 +229,7 @@ public class UserUI {
             System.out.println("No questions to delete");
             return;
         }
-        printQuestions();
+        printQues();
         System.out.print("Select question to delete => ");
         int id = ScannerUtil.numIn.nextInt();
         Question question = testService.checkAndGetQuestion(id);
@@ -220,7 +246,7 @@ public class UserUI {
             System.out.println("No subjects to delete");
             return;
         }
-        printSubjects();
+        printSubs();
         System.out.print("Select subject to delete => ");
         int id = ScannerUtil.numIn.nextInt();
         if (checkSubjectById(id)) {
@@ -240,32 +266,36 @@ public class UserUI {
         } catch (IOException e) {
             System.out.println("File bilan bog'lanib bo'lmadi");
         }
+    }
 
-//        List<Question> questions = testService.getQuestions();
-//        if(questions==null  ||questions.isEmpty()){
-//            System.out.println("No questions");
-//            return;
-//        }
-//
-//        System.out.printf("%2s -> %15s","Id","Text\n");
-//        for (Question question : questions) {
-//            System.out.printf("%2d -> %15s\n",question.getId(),question.getText());
-//            System.out.println();
-//        }
+    public static void printSubs(){
+                List<Subject> subjects = testService.getSubjects();
+        if(subjects==null  || subjects.isEmpty()){
+            System.out.println("No subjects");
+            return;
+        }
+        for (int i = 0; i < subjects.size(); i++) {
+            System.out.println(subjects.get(i).getId()+" = >"+subjects.get(i).getName());
+        }
+    }
+    public  static void printQues(){
+                List<Question> questions = testService.getQuestions();
+        if(questions==null  ||questions.isEmpty()){
+            System.out.println("No questions");
+            return;
+        }
+
+        System.out.printf("%2s -> %15s","Id","Text\n");
+        for (Question question : questions) {
+            System.out.printf("%2d -> %15s\n",question.getId(),question.getText());
+            System.out.println();
+        }
     }
 
     private static void printSubjects() {
         if (!testService.getSubjects())) {
             System.out.println("Connecting with users.pdf is failed");
         }
-//        List<Subject> subjects = testService.getSubjects();
-//        if(subjects==null  || subjects.isEmpty()){
-//            System.out.println("No subjects");
-//            return;
-//        }
-//        for (int i = 0; i < subjects.size(); i++) {
-//            System.out.println(subjects.get(i).getId()+" = >"+subjects.get(i).getName());
-//        }
         try {
             Desktop.getDesktop().open(new File(Database.BASE_FOLDER, "subjects.docx"));
         } catch (IOException e) {

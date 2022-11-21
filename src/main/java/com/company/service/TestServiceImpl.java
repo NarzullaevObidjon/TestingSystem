@@ -154,8 +154,8 @@ public class TestServiceImpl implements TestService {
         List<Subject> subjectList = Database.subjects;
         try (XSSFWorkbook workbook = new XSSFWorkbook();
              FileOutputStream out = new FileOutputStream(file)) {
-            int rowIndex = 0;
             for (Subject subject : subjectList) {
+                int rowIndex = 0;
                 XSSFSheet sheet = workbook.createSheet(subject.getName());
                 XSSFRow rowSheet = sheet.createRow(0);
                 rowSheet.createCell(0).setCellValue("Id");
