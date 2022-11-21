@@ -293,7 +293,7 @@ public class UserUI {
     }
 
     private static void printSubjects() {
-        if (!testService.getSubjects())) {
+        if (!testService.getSubject()) {
             System.out.println("Connecting with users.pdf is failed");
         }
         try {
