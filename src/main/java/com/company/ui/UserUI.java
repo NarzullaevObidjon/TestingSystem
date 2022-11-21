@@ -20,14 +20,15 @@ public class UserUI {
     static UserService userService = new UserServiceImpl();
     static TestService testService = new TestServiceImpl();
     static HistoryService historyService = new HistoryServiceImpl();
+
     public static void adminInterface() {
-        while (true){
+        while (true) {
             System.out.println("         1. Show subjects          6. Edit question\n" +
-                    "         2. Show questions         7. Add question\n"+
+                    "         2. Show questions         7. Add question\n" +
                     "         3. Show users             8. Add subject\n" +
                     "         4. Delete subject         0. Log out\n" +
                     "         5. Delete question");
-            switch (ScannerUtil.numIn.nextInt()){
+            switch (ScannerUtil.numIn.nextInt()) {
                 case 1:
                     printSubjects();
                     break;
@@ -52,17 +53,20 @@ public class UserUI {
                 case 8:
                     addSubject();
                     break;
-                case 0: { App.currUser=null; return;}
+                case 0: {
+                    App.currUser = null;
+                    return;
+                }
             }
         }
 
     }
 
     public static void userInterface() {
-        while (true){
+        while (true) {
             System.out.println("1. Solve test\n2. Fill balance\n3. Show results\n0. Log out");
 
-            switch (ScannerUtil.numIn.nextInt()){
+            switch (ScannerUtil.numIn.nextInt()) {
                 case 1:
                     TestUI.test();
                     break;
@@ -72,7 +76,10 @@ public class UserUI {
                 case 3:
                     showResults();
                     break;
-                case 0:{App.currUser=null; return;}
+                case 0: {
+                    App.currUser = null;
+                    return;
+                }
             }
         }
 
@@ -81,30 +88,30 @@ public class UserUI {
     // user methods
     private static void showResults() {
         List<History> histories = historyService.getHistories(App.currUser.getId());
-        if(histories==null || histories.isEmpty()){
+        if (histories == null || histories.isEmpty()) {
             System.out.println("no history");
         }
-        System.out.printf("%-2s %-10s %-5s %-20s %-20s","id","subject","score","     startedAt","     finishedAt");
+        System.out.printf("%-2s %-10s %-5s %-20s %-20s", "id", "subject", "score", "     startedAt", "     finishedAt");
         System.out.println();
         for (History history : histories) {
-            System.out.printf("%-2d %-10s %-5s %-20s   %-20s",history.getId(),history.getSubject(),""+history.getCorrects()+"/"+history.getQuantity(),
-                    history.getStartedAt(),history.getFinishedAt()+"\n");
+            System.out.printf("%-2d %-10s %-5s %-20s   %-20s", history.getId(), history.getSubject(), "" + history.getCorrects() + "/" + history.getQuantity(),
+                    history.getStartedAt(), history.getFinishedAt() + "\n");
         }
     }
 
     private static void fillBalance() {
-        System.out.println("Balans : "+App.currUser.getBalance());
+        System.out.println("Balans : " + App.currUser.getBalance());
 
         System.out.println("Enter money");
         double money = ScannerUtil.numIn.nextDouble();
 
-        if(money<0){
+        if (money < 0) {
             System.out.println("Wrong");
             return;
         }
         if (userService.fillBalance(money, App.currUser.getId())) {
             System.out.println("Success");
-            System.out.println("Your balance changed to : "+App.currUser.getBalance()+" $");
+            System.out.println("Your balance changed to : " + App.currUser.getBalance() + " $");
         }
 
     }
@@ -113,19 +120,19 @@ public class UserUI {
     private static void addSubject() {
         System.out.println("Fan nomini kiriting");
         String sub = ScannerUtil.textIn.nextLine().toUpperCase();
-        if(testService.doesHaveSub(sub)){
-            System.out.println("\033[1;31m"+"This subject already exists");
+        if (testService.doesHaveSub(sub)) {
+            System.out.println("\033[1;31m" + "This subject already exists");
             return;
         }
 
         System.out.println("Enter price of the test of the subject");
         double price = ScannerUtil.numIn.nextDouble();
-        testService.addSubject(sub,price);
-        System.out.println(sub+" is added");
+        testService.addSubject(sub, price);
+        System.out.println(sub + " is added");
     }
 
     private static void addQuestion() {
-        if(testService.getSubjects()== null || testService.getSubjects().isEmpty()){
+        if (testService.getSubjects() == null || testService.getSubjects().isEmpty()) {
             System.out.println("No subjects. Firstly, add subject");
             return;
         }
@@ -145,21 +152,21 @@ public class UserUI {
         String ans = ScannerUtil.textIn.nextLine();
 
         System.out.println("Enter 3 wrong answers");
-        String ans1=ScannerUtil.textIn.nextLine();
-        String ans2=ScannerUtil.textIn.nextLine();
-        String ans3=ScannerUtil.textIn.nextLine();
+        String ans1 = ScannerUtil.textIn.nextLine();
+        String ans2 = ScannerUtil.textIn.nextLine();
+        String ans3 = ScannerUtil.textIn.nextLine();
 
         Question question = new Question();
         question.setSubjectId(subId);
         question.setAns(ans);
-        question.setWrongAns(new ArrayList<>(List.of(ans1,ans2,ans3)));
+        question.setWrongAns(new ArrayList<>(List.of(ans1, ans2, ans3)));
         question.setText(text);
         testService.addQuestion(question);
         System.out.println("question added");
     }
 
     private static void edit() {
-        if(testService.getQuestions()==null || testService.getQuestions().isEmpty()){
+        if (testService.getQuestions() == null || testService.getQuestions().isEmpty()) {
             System.out.println("No questions to edit");
             return;
         }
@@ -167,16 +174,16 @@ public class UserUI {
         System.out.print("Select question to edit => ");
         int id = ScannerUtil.numIn.nextInt();
         Question question = testService.checkAndGetQuestion(id);
-        if(question==null){
+        if (question == null) {
             System.out.println("Wrong id entered");
             return;
         }
 
-        System.out.println("Text : "+question.getText());
+        System.out.println("Text : " + question.getText());
         System.out.println("'Enter' -> Skip  || Enter new text");
         String text = ScannerUtil.textIn.nextLine();
-        if(!text.isBlank()){
-            text=question.getText();
+        if (!text.isBlank()) {
+            text = question.getText();
         }
         System.out.println("Enter new correct answer");
         String ans = ScannerUtil.textIn.nextLine();
@@ -187,12 +194,12 @@ public class UserUI {
         String ans3 = ScannerUtil.textIn.nextLine();
 
         question.setAns(ans);
-        question.setWrongAns(new ArrayList<>(List.of(ans1,ans2,ans3)));
+        question.setWrongAns(new ArrayList<>(List.of(ans1, ans2, ans3)));
         System.out.println("Editing is finished successfilly");
     }
 
     private static void deleteQuestion() {
-        if(testService.getQuestions()==null || testService.getQuestions().isEmpty()){
+        if (testService.getQuestions() == null || testService.getQuestions().isEmpty()) {
             System.out.println("No questions to delete");
             return;
         }
@@ -200,7 +207,7 @@ public class UserUI {
         System.out.print("Select question to delete => ");
         int id = ScannerUtil.numIn.nextInt();
         Question question = testService.checkAndGetQuestion(id);
-        if(question==null){
+        if (question == null) {
             System.out.println("Wrong id entered");
             return;
         }
@@ -209,7 +216,7 @@ public class UserUI {
     }
 
     private static void deleteSubject() {
-        if(testService.getSubjects()==null  ||testService.getSubjects().isEmpty()){
+        if (testService.getSubjects() == null || testService.getSubjects().isEmpty()) {
             System.out.println("No subjects to delete");
             return;
         }
@@ -219,17 +226,17 @@ public class UserUI {
         if (checkSubjectById(id)) {
             testService.deleteSubject(id);
             System.out.println("Subject deleted");
-        }else {
+        } else {
             System.out.println("wrong id entered");
         }
     }
 
     private static void printQuestions() {
-        if(!testService.toExcel()){
+        if (!testService.toExcel()) {
             System.out.println("Connecting with users.pdf is failed");
         }
         try {
-            Desktop.getDesktop().open(new File(Database.BASE_FOLDER,"questions.xlsx"));
+            Desktop.getDesktop().open(new File(Database.BASE_FOLDER, "questions.xlsx"));
         } catch (IOException e) {
             System.out.println("File bilan bog'lanib bo'lmadi");
         }
@@ -248,7 +255,7 @@ public class UserUI {
     }
 
     private static void printSubjects() {
-        if(!testService.getSubject()){
+        if (!testService.getSubjects())) {
             System.out.println("Connecting with users.pdf is failed");
         }
 //        List<Subject> subjects = testService.getSubjects();
@@ -260,26 +267,26 @@ public class UserUI {
 //            System.out.println(subjects.get(i).getId()+" = >"+subjects.get(i).getName());
 //        }
         try {
-            Desktop.getDesktop().open(new File(Database.BASE_FOLDER,"subjects.docx"));
+            Desktop.getDesktop().open(new File(Database.BASE_FOLDER, "subjects.docx"));
         } catch (IOException e) {
             System.out.println("Connecting with users.pdf is failed");
         }
     }
 
     private static void printUsers() {
-        if(!userService.usersPdf()){
+        if (!userService.usersPdf()) {
             System.out.println("Connecting with users.pdf is failed");
         }
         try {
-            Desktop.getDesktop().open(new File(Database.BASE_FOLDER,"users.pdf"));
+            Desktop.getDesktop().open(new File(Database.BASE_FOLDER, "users.pdf"));
         } catch (IOException e) {
             System.out.println("Connecting with users.pdf is failed");
         }
     }
 
-    private static boolean checkSubjectById(int id){
+    private static boolean checkSubjectById(int id) {
         Subject sub = testService.getSub(id);
-        if(sub!=null){
+        if (sub != null) {
             return true;
         }
         return false;
