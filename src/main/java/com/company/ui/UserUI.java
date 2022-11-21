@@ -1,20 +1,63 @@
 package com.company.ui;
 
 import com.company.App;
+import com.company.db.Database;
 import com.company.entity.History;
 import com.company.entity.Question;
 import com.company.entity.Subject;
 import com.company.service.*;
 import com.company.util.ScannerUtil;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 public class UserUI {
     static UserService userService = new UserServiceImpl();
     static TestService testService = new TestServiceImpl();
     static HistoryService historyService = new HistoryServiceImpl();
+    public static void adminInterface() {
+        while (true){
+            System.out.println("         1. Show subjects          6. Edit question\n" +
+                    "         2. Show questions         7. Add question\n"+
+                    "         3. Show users             8. Add subject\n" +
+                    "         4. Delete subject         0. Log out\n" +
+                    "         5. Delete question");
+            switch (ScannerUtil.numIn.nextInt()){
+                case 1:
+                    printSubjects();
+                    break;
+                case 2:
+                    printQuestions();
+                    break;
+                case 3:
+                    printUsers();
+                    break;
+                case 4:
+                    deleteSubject();
+                    break;
+                case 5:
+                    deleteQuestion();
+                    break;
+                case 6:
+                    edit();
+                    break;
+                case 7:
+                    addQuestion();
+                    break;
+                case 8:
+                    addSubject();
+                    break;
+                case 0: { App.currUser=null; return;}
+            }
+        }
+
+    }
+
     public static void userInterface() {
         while (true){
             System.out.println("1. Solve test\n2. Fill balance\n3. Show results\n0. Log out");
@@ -35,6 +78,7 @@ public class UserUI {
 
     }
 
+    // user methods
     private static void showResults() {
         List<History> histories = historyService.getHistories(App.currUser.getId());
         if(histories==null || histories.isEmpty()){
@@ -65,41 +109,7 @@ public class UserUI {
 
     }
 
-
-    public static void adminInterface() {
-        while (true){
-            System.out.println("         1. Show subjects           5. Edit question\n" +
-                               "         2. Show questions          6. Add question\n" +
-                               "         3. Delete subject          7. Add subject\n" +
-                               "         4. Delete question         0. Log out");
-            switch (ScannerUtil.numIn.nextInt()){
-                case 1:
-                    printSubjects();
-                    break;
-                case 2:
-                    printQuestions();
-                    break;
-                case 3:
-                    deleteSubject();
-                    break;
-                case 4:
-                    deleteQuestion();
-                    break;
-                case 5:
-                    edit();
-                    break;
-                case 6:
-                    addQuestion();
-                    break;
-                case 7:
-                    addSubject();
-                    break;
-                case 0: { App.currUser=null; return;}
-            }
-        }
-
-    }
-
+    // admin methods
     private static void addSubject() {
         System.out.println("Fan nomini kiriting");
         String sub = ScannerUtil.textIn.nextLine().toUpperCase();
@@ -215,29 +225,58 @@ public class UserUI {
     }
 
     private static void printQuestions() {
-        List<Question> questions = testService.getQuestions();
-        if(questions==null  ||questions.isEmpty()){
-            System.out.println("No questions");
-            return;
+        if(!testService.toExcel()){
+            System.out.println("Connecting with users.pdf is failed");
+        }
+        try {
+            Desktop.getDesktop().open(new File(Database.BASE_FOLDER,"questions.xlsx"));
+        } catch (IOException e) {
+            System.out.println("File bilan bog'lanib bo'lmadi");
         }
 
-        System.out.printf("%2s -> %15s","Id","Text\n");
-        for (Question question : questions) {
-            System.out.printf("%2d -> %15s\n",question.getId(),question.getText());
-            System.out.println();
-        }
+//        List<Question> questions = testService.getQuestions();
+//        if(questions==null  ||questions.isEmpty()){
+//            System.out.println("No questions");
+//            return;
+//        }
+//
+//        System.out.printf("%2s -> %15s","Id","Text\n");
+//        for (Question question : questions) {
+//            System.out.printf("%2d -> %15s\n",question.getId(),question.getText());
+//            System.out.println();
+//        }
     }
 
     private static void printSubjects() {
-        List<Subject> subjects = testService.getSubjects();
-        if(subjects==null  || subjects.isEmpty()){
-            System.out.println("No subjects");
-            return;
+        if(!testService.getSubject()){
+            System.out.println("Connecting with users.pdf is failed");
         }
-        for (int i = 0; i < subjects.size(); i++) {
-            System.out.println(subjects.get(i).getId()+" = >"+subjects.get(i).getName());
+//        List<Subject> subjects = testService.getSubjects();
+//        if(subjects==null  || subjects.isEmpty()){
+//            System.out.println("No subjects");
+//            return;
+//        }
+//        for (int i = 0; i < subjects.size(); i++) {
+//            System.out.println(subjects.get(i).getId()+" = >"+subjects.get(i).getName());
+//        }
+        try {
+            Desktop.getDesktop().open(new File(Database.BASE_FOLDER,"subjects.docx"));
+        } catch (IOException e) {
+            System.out.println("Connecting with users.pdf is failed");
         }
     }
+
+    private static void printUsers() {
+        if(!userService.usersPdf()){
+            System.out.println("Connecting with users.pdf is failed");
+        }
+        try {
+            Desktop.getDesktop().open(new File(Database.BASE_FOLDER,"users.pdf"));
+        } catch (IOException e) {
+            System.out.println("Connecting with users.pdf is failed");
+        }
+    }
+
     private static boolean checkSubjectById(int id){
         Subject sub = testService.getSub(id);
         if(sub!=null){
@@ -245,5 +284,4 @@ public class UserUI {
         }
         return false;
     }
-
 }
