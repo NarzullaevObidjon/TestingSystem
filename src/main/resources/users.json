@@ -12,7 +12,7 @@
     "name": "Obidjon",
     "phone": "+998944660444",
     "password": "04440444",
-    "balance": 50.0,
+    "balance": 51.0,
     "type": "USER"
   },
   {
@@ -21,6 +21,22 @@
     "phone": "+998900614542",
     "password": "98029802",
     "balance": 0.0,
+    "type": "USER"
+  },
+  {
+    "id": 7,
+    "name": "Jahongir",
+    "phone": "+998942496030",
+    "password": "12345678",
+    "balance": 45.0,
+    "type": "USER"
+  },
+  {
+    "id": 9,
+    "name": "Ali",
+    "phone": "+998946696195",
+    "password": "12345678",
+    "balance": 1500.0,
     "type": "USER"
   }
 ]
