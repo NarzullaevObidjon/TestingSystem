@@ -3,7 +3,6 @@ package com.company.service;
 import com.company.db.Database;
 import com.company.dto.UserDTO;
 import com.company.entity.User;
-import com.company.util.Result;
 import com.google.gson.Gson;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -12,7 +11,7 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 
-import java.awt.*;
+
 import java.io.*;
 import java.util.List;
 
@@ -51,7 +50,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean userPdf() {
-        Gson gson=new Gson();
         File file=new File(Database.BASE_FOLDER,"users.pdf");
 
         try (PdfWriter pdfWriter = new PdfWriter(file);
